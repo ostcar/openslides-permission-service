@@ -7,11 +7,11 @@ import (
 
 	user "github.com/OpenSlides/openslides-permission-service/internal/collection"
 	"github.com/OpenSlides/openslides-permission-service/internal/dataprovider"
-	"github.com/OpenSlides/openslides-permission-service/internal/tests"
+	"github.com/OpenSlides/openslides-permission-service/internal/test"
 )
 
 func TestPersonalNote(t *testing.T) {
-	tdp := tests.NewTestDataProvider()
+	tdp := test.NewDataProvider()
 	tdp.AddUserToMeeting(1, 1) // Speaker user
 	tdp.AddUserToMeeting(2, 1) // Unprivileg user
 
@@ -23,7 +23,7 @@ func TestPersonalNote(t *testing.T) {
 
 	dp := dataprovider.DataProvider{External: tdp}
 	n := user.NewPersonalNote(dp)
-	hs := new(tests.HandlerStoreMock)
+	hs := new(test.HandlerStoreMock)
 	n.Connect(hs)
 	update := hs.WriteHandler["personal_note.update"]
 	read := hs.ReadHandler["personal_note"]

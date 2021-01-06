@@ -6,11 +6,11 @@ import (
 
 	"github.com/OpenSlides/openslides-permission-service/internal/dataprovider"
 	"github.com/OpenSlides/openslides-permission-service/internal/perm"
-	"github.com/OpenSlides/openslides-permission-service/internal/tests"
+	"github.com/OpenSlides/openslides-permission-service/internal/test"
 )
 
 func TestDerivatePerm(t *testing.T) {
-	tdp := tests.NewTestDataProvider()
+	tdp := test.NewDataProvider()
 	tdp.AddUser(1)
 	tdp.AddUserToMeeting(1, 1)
 	tdp.AddUserToGroup(1, 1, 2)

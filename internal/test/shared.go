@@ -1,4 +1,4 @@
-package tests
+package test
 
 import (
 	"context"
@@ -25,20 +25,20 @@ func addStringToJSONArray(arrayJSON json.RawMessage, value string) json.RawMessa
 	return newArrayJSON
 }
 
-// TestDataProvider does ...
-type TestDataProvider struct {
+// DataProvider does ...
+type DataProvider struct {
 	Data map[string]json.RawMessage
 }
 
-// NewTestDataProvider does ...
-func NewTestDataProvider() *TestDataProvider {
-	var testDataProvider = &TestDataProvider{nil}
+// NewDataProvider does ...
+func NewDataProvider() *DataProvider {
+	var testDataProvider = &DataProvider{nil}
 	testDataProvider.SetDefault()
 	return testDataProvider
 }
 
 // GetDataprovider does ...
-func (t *TestDataProvider) GetDataprovider() dataprovider.DataProvider {
+func (t *DataProvider) GetDataprovider() dataprovider.DataProvider {
 	return dataprovider.DataProvider{External: t}
 }
 
@@ -48,7 +48,7 @@ func (t *TestDataProvider) GetDataprovider() dataprovider.DataProvider {
 // - 1: Default
 // - 2: Delegates
 // - 3: Admin
-func (t *TestDataProvider) SetDefault() {
+func (t *DataProvider) SetDefault() {
 	data := map[string]string{
 		"organisation/1/id":                 "1",
 		"organisation/1/committee_ids":      "[1]",
@@ -117,31 +117,31 @@ func (t *TestDataProvider) SetDefault() {
 }
 
 // AddBasicModel does ...
-func (t *TestDataProvider) AddBasicModel(collection string, id int) {
+func (t *DataProvider) AddBasicModel(collection string, id int) {
 	t.Set(collection+"/"+strconv.Itoa(id)+"/id", strconv.Itoa(id))
 	t.Set(collection+"/"+strconv.Itoa(id)+"/meeting_id", "1")
 	t.Set("meeting/1/"+collection+"_ids", "["+strconv.Itoa(id)+"]")
 }
 
 // EnableAnonymous does ...
-func (t *TestDataProvider) EnableAnonymous() {
+func (t *DataProvider) EnableAnonymous() {
 	t.Data["meeting/1/enable_anonymous"] = []byte("true")
 }
 
 // AddUser does ...
-func (t *TestDataProvider) AddUser(id int) {
+func (t *DataProvider) AddUser(id int) {
 	t.Data["user/"+strconv.Itoa(id)+"/id"] = []byte(strconv.Itoa(id))
 }
 
 // AddUserToMeeting does ...
-func (t *TestDataProvider) AddUserToMeeting(userID, meetingID int) {
+func (t *DataProvider) AddUserToMeeting(userID, meetingID int) {
 	t.AddUser(userID)
 	meetingField := "meeting/" + strconv.Itoa(meetingID) + "/user_ids"
 	t.Data[meetingField] = addIntToJSONArray(t.getFieldWithDefault(meetingField, "[]"), userID)
 }
 
 // AddUserToGroup adds the user to the group in the given meeting.
-func (t *TestDataProvider) AddUserToGroup(userID, meetingID, groupID int) {
+func (t *DataProvider) AddUserToGroup(userID, meetingID, groupID int) {
 	groupFQField := fmt.Sprintf("group/%d/user_ids", groupID)
 	t.Data[groupFQField] = addIntToJSONArray(t.getFieldWithDefault(groupFQField, "[]"), userID)
 
@@ -150,7 +150,7 @@ func (t *TestDataProvider) AddUserToGroup(userID, meetingID, groupID int) {
 }
 
 // AddUserToCommitteeAsManager does ...
-func (t *TestDataProvider) AddUserToCommitteeAsManager(userID, committeeID int) {
+func (t *DataProvider) AddUserToCommitteeAsManager(userID, committeeID int) {
 	t.AddUser(userID)
 	userField := "user/" + strconv.Itoa(userID) + "/committee_as_manager_ids"
 	t.Data[userField] = addIntToJSONArray(t.getFieldWithDefault(userField, "[]"), committeeID)
@@ -159,26 +159,26 @@ func (t *TestDataProvider) AddUserToCommitteeAsManager(userID, committeeID int) 
 }
 
 // AddUserWithSuperadminRole does ...
-func (t *TestDataProvider) AddUserWithSuperadminRole(id int) {
+func (t *DataProvider) AddUserWithSuperadminRole(id int) {
 	t.Data["role/1/user_ids"] = addIntToJSONArray(t.getFieldWithDefault("role/1/user_ids", "[]"), id)
 	t.Data["user/"+strconv.Itoa(id)+"/id"] = []byte(strconv.Itoa(id))
 	t.Data["user/"+strconv.Itoa(id)+"/role_id"] = []byte("1")
 }
 
 // AddUserWithAdminGroupToMeeting does ...
-func (t *TestDataProvider) AddUserWithAdminGroupToMeeting(userID, meetingID int) {
+func (t *DataProvider) AddUserWithAdminGroupToMeeting(userID, meetingID int) {
 	t.AddUserToMeeting(userID, meetingID)
 	t.Data["group/3/user_ids"] = addIntToJSONArray(t.getFieldWithDefault("group/3/user_ids", "[]"), userID)
 	t.Data["user/"+strconv.Itoa(userID)+"/group_$"+strconv.Itoa(meetingID)+"_ids"] = []byte("[3]")
 }
 
 // AddPermissionToGroup does ...
-func (t *TestDataProvider) AddPermissionToGroup(groupID int, permission string) {
+func (t *DataProvider) AddPermissionToGroup(groupID int, permission string) {
 	fqfield := "group/" + strconv.Itoa(groupID) + "/permissions"
 	t.Data[fqfield] = addStringToJSONArray(t.getFieldWithDefault(fqfield, "[]"), permission)
 }
 
-func (t *TestDataProvider) getFieldWithDefault(fqfield string, defaultValue string) json.RawMessage {
+func (t *DataProvider) getFieldWithDefault(fqfield string, defaultValue string) json.RawMessage {
 	if value, ok := t.Data[fqfield]; ok {
 		return value
 	}
@@ -187,12 +187,12 @@ func (t *TestDataProvider) getFieldWithDefault(fqfield string, defaultValue stri
 }
 
 // Set does ...
-func (t *TestDataProvider) Set(fqfield string, value string) {
+func (t *DataProvider) Set(fqfield string, value string) {
 	t.Data[fqfield] = []byte(value)
 }
 
 // Get does ...
-func (t TestDataProvider) Get(ctx context.Context, fqfields ...string) ([]json.RawMessage, error) {
+func (t DataProvider) Get(ctx context.Context, fqfields ...string) ([]json.RawMessage, error) {
 	data := make([]json.RawMessage, len(fqfields))
 	for i, field := range fqfields {
 		value, ok := t.Data[field]

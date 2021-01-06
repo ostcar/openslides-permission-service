@@ -1,4 +1,4 @@
-package tests
+package test
 
 import (
 	"encoding/json"
@@ -26,7 +26,7 @@ func NewDatastoreServer() *DatastoreServer {
 	ts := new(DatastoreServer)
 
 	ts.TS = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		testData := NewTestDataProvider()
+		testData := NewDataProvider()
 		var requestData getManyRequest
 		if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
 			http.Error(w, fmt.Sprintf("Invalid json input: %v", err), http.StatusBadRequest)

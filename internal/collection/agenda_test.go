@@ -6,11 +6,11 @@ import (
 
 	user "github.com/OpenSlides/openslides-permission-service/internal/collection"
 	"github.com/OpenSlides/openslides-permission-service/internal/dataprovider"
-	"github.com/OpenSlides/openslides-permission-service/internal/tests"
+	"github.com/OpenSlides/openslides-permission-service/internal/test"
 )
 
 func TestAgendaRead(t *testing.T) {
-	tdp := tests.NewTestDataProvider()
+	tdp := test.NewDataProvider()
 	tdp.AddUserToMeeting(1, 1)
 
 	// Normal
@@ -35,7 +35,7 @@ func TestAgendaRead(t *testing.T) {
 
 	dp := dataprovider.DataProvider{External: tdp}
 	a := user.NewAgendaItem(dp)
-	hs := new(tests.HandlerStoreMock)
+	hs := new(test.HandlerStoreMock)
 	a.Connect(hs)
 	read := hs.ReadHandler["agenda_item"]
 

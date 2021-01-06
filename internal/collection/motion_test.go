@@ -7,11 +7,11 @@ import (
 
 	user "github.com/OpenSlides/openslides-permission-service/internal/collection"
 	"github.com/OpenSlides/openslides-permission-service/internal/dataprovider"
-	"github.com/OpenSlides/openslides-permission-service/internal/tests"
+	"github.com/OpenSlides/openslides-permission-service/internal/test"
 )
 
 func TestMotionSetState(t *testing.T) {
-	tdp := tests.NewTestDataProvider()
+	tdp := test.NewDataProvider()
 	tdp.AddUserToMeeting(1, 1)
 
 	tdp.AddBasicModel("motion", 1)
@@ -28,7 +28,7 @@ func TestMotionSetState(t *testing.T) {
 
 	dp := dataprovider.DataProvider{External: tdp}
 	m := user.NewMotion(dp)
-	hs := new(tests.HandlerStoreMock)
+	hs := new(test.HandlerStoreMock)
 	m.Connect(hs)
 	setState, ok := hs.WriteHandler["motion.set_state"]
 	if !ok {
@@ -64,7 +64,7 @@ func TestMotionSetState(t *testing.T) {
 }
 
 func TestMotionDelete(t *testing.T) {
-	tdp := tests.NewTestDataProvider()
+	tdp := test.NewDataProvider()
 	tdp.AddUserToMeeting(1, 1)
 
 	tdp.AddBasicModel("motion", 1)
@@ -81,7 +81,7 @@ func TestMotionDelete(t *testing.T) {
 
 	dp := dataprovider.DataProvider{External: tdp}
 	m := user.NewMotion(dp)
-	hs := new(tests.HandlerStoreMock)
+	hs := new(test.HandlerStoreMock)
 	m.Connect(hs)
 	delete, ok := hs.WriteHandler["motion.delete"]
 	if !ok {
@@ -117,12 +117,12 @@ func TestMotionDelete(t *testing.T) {
 }
 
 func TestMotionCreate(t *testing.T) {
-	tdp := tests.NewTestDataProvider()
+	tdp := test.NewDataProvider()
 	tdp.AddUserToMeeting(1, 1)
 
 	dp := dataprovider.DataProvider{External: tdp}
 	m := user.NewMotion(dp)
-	hs := new(tests.HandlerStoreMock)
+	hs := new(test.HandlerStoreMock)
 	m.Connect(hs)
 	create, ok := hs.WriteHandler["motion.create"]
 	if !ok {

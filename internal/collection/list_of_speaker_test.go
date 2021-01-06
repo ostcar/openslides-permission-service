@@ -7,11 +7,11 @@ import (
 
 	"github.com/OpenSlides/openslides-permission-service/internal/collection"
 	"github.com/OpenSlides/openslides-permission-service/internal/dataprovider"
-	"github.com/OpenSlides/openslides-permission-service/internal/tests"
+	"github.com/OpenSlides/openslides-permission-service/internal/test"
 )
 
 func TestSpeaker(t *testing.T) {
-	tdp := tests.NewTestDataProvider()
+	tdp := test.NewDataProvider()
 	tdp.AddUserToMeeting(1, 1) // Speaker user
 	tdp.AddUserToMeeting(2, 1) // Manager user
 	tdp.AddUserToGroup(2, 1, 3)
@@ -19,7 +19,7 @@ func TestSpeaker(t *testing.T) {
 
 	dp := dataprovider.DataProvider{External: tdp}
 	s := collection.ListOfSpeaker(dp)
-	hs := new(tests.HandlerStoreMock)
+	hs := new(test.HandlerStoreMock)
 	s.Connect(hs)
 	delete := hs.WriteHandler["speaker.delete"]
 	read := hs.ReadHandler["speaker"]

@@ -5,11 +5,11 @@ import (
 	"testing"
 
 	"github.com/OpenSlides/openslides-permission-service/internal/datastore"
-	"github.com/OpenSlides/openslides-permission-service/internal/tests"
+	"github.com/OpenSlides/openslides-permission-service/internal/test"
 )
 
 func TestDatastore(t *testing.T) {
-	dbServer := tests.NewDatastoreServer()
+	dbServer := test.NewDatastoreServer()
 	defer dbServer.TS.Close()
 
 	db := &datastore.Datastore{Addr: dbServer.TS.URL}
@@ -33,7 +33,7 @@ func TestDatastore(t *testing.T) {
 }
 
 func TestDataStoreNull(t *testing.T) {
-	dbServer := tests.NewDatastoreServer()
+	dbServer := test.NewDatastoreServer()
 	defer dbServer.TS.Close()
 
 	db := &datastore.Datastore{Addr: dbServer.TS.URL}
