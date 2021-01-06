@@ -31,7 +31,7 @@ type Case struct {
 
 	// only needed on collections.
 	FQFields         []string
-	ExpectedFQFields []string
+	ExpectedFQFields []string `yaml:"expect"`
 }
 
 // Test runs the test.Case.
@@ -127,13 +127,13 @@ func (c *Case) testRead(t *testing.T, p *permission.Permission) {
 	}
 
 	if len(got) != len(c.ExpectedFQFields) {
-		t.Errorf("RestrictFQField(%s) for case %s returned %v, expected %v", c.Handler, c.name, setToList(got), c.ExpectedAllowed)
+		t.Errorf("RestrictFQField(%s) returned %v, expected %v", c.Handler, setToList(got), c.ExpectedFQFields)
 		return
 	}
 
 	for _, f := range c.ExpectedFQFields {
 		if !got[f] {
-			t.Errorf("RestrictFQField(%s) for case %s did not allow %s", c.Handler, c.name, f)
+			t.Errorf("RestrictFQField(%s) did not allow %s", c.Handler, f)
 		}
 	}
 }
@@ -190,6 +190,9 @@ func (c *Cases) UnmarshalYAML(value *yaml.Node) error {
 	}
 
 	for k, v := range m {
+		if strings.HasPrefix(k, "x-") {
+			continue
+		}
 		v.name = k
 		c.cases = append(c.cases, v)
 	}

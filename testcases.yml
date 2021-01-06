@@ -1,14 +1,51 @@
 ---
-Test_agenda_item.assign:
+Agenda_item.assign:
   handler: agenda_item.assign
   permission: agenda.can_manage
   payload:
     meeting_id: 1
   is_allowed: true
 
-Test_denied_agenda_item.assign:
+Agenda_item.assign_denied:
   handler: agenda_item.assign
   payload:
     meeting_id: 1
   is_allowed: false
 
+
+x-AgendaReadVars: &AgendaReadVars
+  handler: agenda_item
+  fqfields:
+    - "agenda_item/1/id"
+    - "agenda_item/1/duration"
+    - "agenda_item/1/comment"
+    - "agenda_item/10/id" # Hidden
+    - "agenda_item/6/id" # Internal
+
+AgendaReadUser_no_perm:
+  <<: *AgendaReadVars
+  expect: []
+
+AgendaReadUser_CanSee:
+  <<: *AgendaReadVars
+  permission: agenda.can_see
+  expect:
+   - agenda_item/1/id
+
+AgendaReadUnprivilegedUser_CanSeeInternal:
+  <<: *AgendaReadVars
+  permission: agenda.can_see_internal_items
+  expect:
+   - agenda_item/1/id
+   - agenda_item/1/duration
+   - agenda_item/6/id
+
+AgendaReadUnprivilegedUser_CanManage:
+  <<: *AgendaReadVars
+  permission: agenda.can_manage
+  expect:
+    - "agenda_item/1/id"
+    - "agenda_item/1/duration"
+    - "agenda_item/1/comment"
+    - "agenda_item/10/id"
+    - "agenda_item/6/id"
