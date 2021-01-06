@@ -1,0 +1,14 @@
+---
+Test_agenda_item.assign:
+  handler: agenda_item.assign
+  permission: agenda.can_manage
+  payload:
+    meeting_id: 1
+  is_allowed: true
+
+Test_denied_agenda_item.assign:
+  handler: agenda_item.assign
+  payload:
+    meeting_id: 1
+  is_allowed: false
+

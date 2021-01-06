@@ -62,7 +62,7 @@ func New(ctx context.Context, dp dataprovider.DataProvider, userID, meetingID in
 	for _, gid := range effectiveGroupIDs {
 		fqfield := fmt.Sprintf("group/%d/permissions", gid)
 		var perms []string
-		if err := dp.Get(ctx, fqfield, &perms); err != nil {
+		if err := dp.GetIfExist(ctx, fqfield, &perms); err != nil {
 			return nil, fmt.Errorf("getting %s: %w", fqfield, err)
 		}
 		for _, perm := range perms {
@@ -172,7 +172,7 @@ func EnsurePerm(ctx context.Context, dp dataprovider.DataProvider, userID int, m
 
 	hasPerms := perm.Has(permission)
 	if !hasPerms {
-		return NotAllowedf("User %d does not have the permission %s int meeting %d", userID, permission, meetingID)
+		return NotAllowedf("User %d does not have the permission %s in meeting %d", userID, permission, meetingID)
 	}
 
 	return nil
