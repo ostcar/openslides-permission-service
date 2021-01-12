@@ -23,30 +23,16 @@ func NewPersonalNote(dp dataprovider.DataProvider) *PersonalNote {
 
 // Connect creates the routes.
 func (p *PersonalNote) Connect(s perm.HandlerStore) {
-	s.RegisterWriteHandler("personal_note.create", perm.WriteCheckerFunc(p.create))
-	s.RegisterWriteHandler("personal_note.update", perm.WriteCheckerFunc(p.modify))
-	s.RegisterWriteHandler("personal_note.delete", perm.WriteCheckerFunc(p.modify))
+	s.RegisterWriteHandler("personal_note.create", perm.WriteCheckerFunc(p.write))
+	s.RegisterWriteHandler("personal_note.update", perm.WriteCheckerFunc(p.write))
+	s.RegisterWriteHandler("personal_note.delete", perm.WriteCheckerFunc(p.write))
 
 	s.RegisterReadHandler("personal_note", p)
 }
 
-func (p PersonalNote) create(ctx context.Context, userID int, payload map[string]json.RawMessage) (bool, error) {
+func (p PersonalNote) write(ctx context.Context, userID int, payload map[string]json.RawMessage) (bool, error) {
 	if userID == 0 {
 		perm.LogNotAllowedf("Anonymous can not create personal notes.")
-		return false, nil
-	}
-	return true, nil
-}
-
-func (p PersonalNote) modify(ctx context.Context, userID int, payload map[string]json.RawMessage) (bool, error) {
-	fqfield := fmt.Sprintf("personal_note/%s/user_id", payload["id"])
-	var noteUserID int
-	if err := p.dp.Get(ctx, fqfield, &noteUserID); err != nil {
-		return false, fmt.Errorf("getting %s from datastore: %w", fqfield, err)
-	}
-
-	if noteUserID != userID {
-		perm.LogNotAllowedf("Note belongs to a different user.")
 		return false, nil
 	}
 	return true, nil
