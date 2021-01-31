@@ -1,7 +1,43 @@
-// Code generated with autogen.gen DO NOT EDIT.
+// Code generated with build_derivate DO NOT EDIT.
 package perm
 
-var derivatePerms = map[string][]string{
+const (
+	AgendaItemCanManage           TPermission = "agenda_item.can_manage"
+	AgendaItemCanSee              TPermission = "agenda_item.can_see"
+	AgendaItemCanSeeInternal      TPermission = "agenda_item.can_see_internal"
+	AssignmentCanManage           TPermission = "assignment.can_manage"
+	AssignmentCanNominateOther    TPermission = "assignment.can_nominate_other"
+	AssignmentCanNominateSelf     TPermission = "assignment.can_nominate_self"
+	AssignmentCanSee              TPermission = "assignment.can_see"
+	ListOfSpeakersCanBeSpeaker    TPermission = "list_of_speakers.can_be_speaker"
+	ListOfSpeakersCanManage       TPermission = "list_of_speakers.can_manage"
+	ListOfSpeakersCanSee          TPermission = "list_of_speakers.can_see"
+	MediafileCanManage            TPermission = "mediafile.can_manage"
+	MediafileCanSee               TPermission = "mediafile.can_see"
+	MeetingCanManageLogosAndFonts TPermission = "meeting.can_manage_logos_and_fonts"
+	MeetingCanManageSettings      TPermission = "meeting.can_manage_settings"
+	MeetingCanSeeAutopilot        TPermission = "meeting.can_see_autopilot"
+	MeetingCanSeeFrontpage        TPermission = "meeting.can_see_frontpage"
+	MeetingCanSeeHistory          TPermission = "meeting.can_see_history"
+	MeetingCanSeeLivestream       TPermission = "meeting.can_see_livestream"
+	MotionCanCreate               TPermission = "motion.can_create"
+	MotionCanCreateAmendments     TPermission = "motion.can_create_amendments"
+	MotionCanManage               TPermission = "motion.can_manage"
+	MotionCanManageMetadata       TPermission = "motion.can_manage_metadata"
+	MotionCanManagePolls          TPermission = "motion.can_manage_polls"
+	MotionCanSee                  TPermission = "motion.can_see"
+	MotionCanSeeInternal          TPermission = "motion.can_see_internal"
+	MotionCanSupport              TPermission = "motion.can_support"
+	ProjectorCanManage            TPermission = "projector.can_manage"
+	ProjectorCanSee               TPermission = "projector.can_see"
+	TagCanManage                  TPermission = "tag.can_manage"
+	UserCanChangeOwnPassword      TPermission = "user.can_change_own_password"
+	UserCanManage                 TPermission = "user.can_manage"
+	UserCanSee                    TPermission = "user.can_see"
+	UserCanSeeExtraData           TPermission = "user.can_see_extra_data"
+)
+
+var derivatePerms = map[TPermission][]TPermission{
 	"agenda_item.can_manage":             {"agenda_item.can_see", "agenda_item.can_see_internal"},
 	"agenda_item.can_see":                {},
 	"agenda_item.can_see_internal":       {"agenda_item.can_see"},
