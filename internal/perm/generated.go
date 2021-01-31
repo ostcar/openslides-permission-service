@@ -1,4 +1,4 @@
-// Code generated with build_derivate DO NOT EDIT.
+// Code generated with generated/main.go DO NOT EDIT.
 package perm
 
 const (

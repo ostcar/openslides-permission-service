@@ -92,7 +92,7 @@ func constName(perm string) string {
 	return string(bs)
 }
 
-const tpl = `// Code generated with build_derivate DO NOT EDIT.
+const tpl = `// Code generated with generated/main.go DO NOT EDIT.
 package perm
 
 const (
